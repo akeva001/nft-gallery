@@ -8,7 +8,7 @@ import { Nft } from "@ankr.com/ankr.js/dist/types";
 
 const Home: NextPage = () => {
   const [walletAddress, setWalletAddress] = useState(
-    "0xb85D2D0E91D6D1932411ebfb3c151cB62b416e43"
+    "0x5139d44fcAF91a3B0c609E4eAF00E2E69cb4A4A6"
   );
   const [lastToken, setLastToken] = useState("");
   //const { nfts, loading, error } = useNfts(walletAddress);
