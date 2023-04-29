@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { IpfsImage } from "react-ipfs-image";
+import Image from "next/image";
 
 export interface CardProps {
   name?: string;

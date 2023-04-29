@@ -5,7 +5,7 @@ const provider = new AnkrProvider(" ");
 export const getNfts = async (address: string, token: string) => {
   const { assets, nextPageToken } = await provider.getNFTsByOwner({
     walletAddress: address,
-    pageSize: 50,
+    pageSize: 13,
     pageToken: token,
     blockchain: ["bsc", "eth", "polygon"],
   });
