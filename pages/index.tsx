@@ -66,8 +66,9 @@ const Home: NextPage = () => {
           type="text"
           value={walletAddress}
           onChange={(e) => setWalletAddress(e.target.value)}
-          className="rounded p-1 w-[425px] border text-black"
+          className="rounded p-1 w-[425px] border bg-black text-blue-500 text-decoration-none pl-2"
           placeholder="Enter a wallet address here to view NFTs"
+          spellCheck="false"
         />
       </div>
 
