@@ -78,13 +78,13 @@ const Home: NextPage = () => {
         NFT Gallery
       </h1>
 
-      <div className="flex-left flex-col mt-4">
+      <div className="flex md:flex-left flex-col mt-4">
         <input
           id="wallet-address"
           type="text"
           value={walletAddress}
           onChange={(e) => setWalletAddress(e.target.value)}
-          className="rounded p-1 w-[425px] border bg-black text-blue-500 text-decoration-none pl-2"
+          className="rounded p-1 w-[90vw] md:w-[425px] border bg-black text-blue-500 text-decoration-none pl-2 md:mx-0"
           placeholder="Enter a wallet address here to view NFTs"
           spellCheck="false"
         />
@@ -96,7 +96,7 @@ const Home: NextPage = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-4 mt-8 gap-4">
+      <div className="grid grid-cols-1 mt-8 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {[...uniqueNfts].map((nft) => (
           <div
             key={`${nft.contractAddress}/${nft.tokenId}`}
