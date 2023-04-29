@@ -7,7 +7,6 @@ export const getNfts = async (address: string, token: string) => {
     walletAddress: address,
     pageSize: 50,
     pageToken: token,
-    blockchain: ["bsc"],
   });
   return {
     nfts: assets,
