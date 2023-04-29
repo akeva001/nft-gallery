@@ -60,8 +60,8 @@ const Home: NextPage = () => {
 
   return (
     <div
-      className=" bg-black p-10 flex flex-col overflow-y-scroll items-center h-screen 
-    z-0 scrollbar scrollbar-track-gray-400/20 scrollbar-thumb-[#06c]/80 scrollbar-thumb-rounded"
+      className=" bg-black p-10 flex flex-col items-center
+    z-0"
     >
       <h1 className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-500">
         NFT Gallery
@@ -87,7 +87,7 @@ const Home: NextPage = () => {
 
       <div className="grid grid-cols-4 mt-8 gap-4">
         {nfts
-          .filter((nft) => nft.imageUrl)
+          .filter((nft) => nft.imageUrl && nft.imageUrl.startsWith("http"))
           .map((nft) => {
             return (
               <div
