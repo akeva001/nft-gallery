@@ -12,6 +12,7 @@ const Home: NextPage = () => {
   //const { nfts, loading, error } = useNfts(walletAddress);
   const [nfts, setNfts] = useState<Nft[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadedAll, setLoadedAll] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -41,34 +42,25 @@ const Home: NextPage = () => {
     console.log(lastToken);
     const { nfts, nextToken } = await getNfts(walletAddress, lastToken);
     setLastToken(nextToken);
+
     setNfts((prevNfts) => [...prevNfts, ...nfts]);
     console.log({ nfts });
+    if (!nextToken) {
+      setLoadedAll(true);
+      return;
+    }
   };
 
   return (
-    <div className="p-10 flex flex-col items-center">
-      <h1 className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-400">
+    <div
+      className=" bg-black p-10 flex flex-col overflow-y-scroll items-center h-screen 
+    z-0 scrollbar scrollbar-track-gray-400/20 scrollbar-thumb-[#06c]/80 scrollbar-thumb-rounded"
+    >
+      <h1 className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-500">
         NFT Gallery
       </h1>
-      {/* <h3 className="text-zinc-700">
-        Powered by{" "}
-        <a
-          href="https://www.ankr.com/advanced-api/"
-          target="_blank"
-          rel="noreferrer"
-          className="cursor-pointer underline"
-        >
-          Ankr Advanced APIs
-        </a>
-      </h3> */}
 
       <div className="flex-left flex-col mt-4">
-        <label
-          className="text-zinc-700 text-1xl bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"
-          htmlFor="wallet-address"
-        >
-          &nbsp; Wallet address: &nbsp;
-        </label>
         <input
           id="wallet-address"
           type="text"
@@ -112,12 +104,14 @@ const Home: NextPage = () => {
           </div>
         )} */}
       </div>
-      <button
-        className="bg-[#06d6a0] text-stone-100 p-2 rounded-sm hover:bg-green-500 transition-all transition-300 transition-linear "
-        onClick={() => loadMoreNFTs()}
-      >
-        Load More NFT's
-      </button>
+      {nfts.length > 0 && !loadedAll && (
+        <button
+          className="bg-[#06c] text-stone-100 p-2 mt-5 rounded-sm hover:[#06c]/80 transition-all transition-300 transition-linear"
+          onClick={() => loadMoreNFTs()}
+        >
+          Load More
+        </button>
+      )}
     </div>
   );
 };
