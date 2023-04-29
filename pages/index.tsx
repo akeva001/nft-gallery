@@ -7,7 +7,9 @@ import Card from "../components/Card";
 import { Nft } from "@ankr.com/ankr.js/dist/types";
 
 const Home: NextPage = () => {
-  const [walletAddress, setWalletAddress] = useState("");
+  const [walletAddress, setWalletAddress] = useState(
+    "0xb85D2D0E91D6D1932411ebfb3c151cB62b416e43"
+  );
   const [lastToken, setLastToken] = useState("");
   //const { nfts, loading, error } = useNfts(walletAddress);
   const [nfts, setNfts] = useState<Nft[]>([]);
@@ -58,6 +60,15 @@ const Home: NextPage = () => {
     }
   };
 
+  const uniqueNfts = new Set(
+    nfts
+      .filter((nft) => nft.imageUrl && nft.imageUrl.startsWith("http"))
+      .map((nft) => ({ ...nft, key: `${nft.contractAddress}/${nft.tokenId}` }))
+      .filter(
+        (nft, index, self) => index === self.findIndex((t) => t.key === nft.key)
+      )
+  );
+
   return (
     <div
       className=" bg-black p-10 flex flex-col items-center
@@ -86,23 +97,19 @@ const Home: NextPage = () => {
       )}
 
       <div className="grid grid-cols-4 mt-8 gap-4">
-        {nfts
-          .filter((nft) => nft.imageUrl && nft.imageUrl.startsWith("http"))
-          .map((nft) => {
-            return (
-              <div
-                key={`${nft.contractAddress}/${nft.tokenId}`}
-                className="flex flex-col rounded border p-4"
-              >
-                <Card
-                  name={nft.name}
-                  imageSlug={nft.imageUrl}
-                  blockchain={nft.blockchain}
-                  collection={nft.collectionName}
-                />
-              </div>
-            );
-          })}
+        {[...uniqueNfts].map((nft) => (
+          <div
+            key={`${nft.contractAddress}/${nft.tokenId}`}
+            className="flex flex-col rounded border p-4"
+          >
+            <Card
+              name={nft.name}
+              imageSlug={nft.imageUrl}
+              blockchain={nft.blockchain}
+              collection={nft.collectionName}
+            />
+          </div>
+        ))}
 
         {/* {error && (
           <div className="flex flex-col items-center mt-8">
