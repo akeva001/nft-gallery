@@ -35,6 +35,10 @@ const Home: NextPage = () => {
       console.log({ nfts });
       setNfts(nfts);
       setLoading(false);
+      if (!nextToken) {
+        setLoadedAll(true);
+        return;
+      }
     })();
   }, [walletAddress]);
 
