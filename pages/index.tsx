@@ -12,6 +12,7 @@ const Home: NextPage = () => {
   //const { nfts, loading, error } = useNfts(walletAddress);
   const [nfts, setNfts] = useState<Nft[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [loadedAll, setLoadedAll] = useState(false);
 
   useEffect(() => {
@@ -43,12 +44,14 @@ const Home: NextPage = () => {
   }, [walletAddress]);
 
   const loadMoreNFTs = async () => {
+    setLoadingMore(true);
     console.log(lastToken);
     const { nfts, nextToken } = await getNfts(walletAddress, lastToken);
+    console.log(nextToken);
     setLastToken(nextToken);
-
     setNfts((prevNfts) => [...prevNfts, ...nfts]);
     console.log({ nfts });
+    setLoadingMore(false);
     if (!nextToken) {
       setLoadedAll(true);
       return;
@@ -77,7 +80,7 @@ const Home: NextPage = () => {
       </div>
 
       {loading && (
-        <div className="flex flex-col p-4 items-center text-center">
+        <div className="flex flex-col p-5 items-center text-center">
           <p className="text-zinc-700">Loading...</p>
         </div>
       )}
@@ -113,8 +116,9 @@ const Home: NextPage = () => {
         <button
           className="bg-[#06c] text-stone-100 p-2 mt-5 rounded-sm hover:[#06c]/80 transition-all transition-300 transition-linear"
           onClick={() => loadMoreNFTs()}
+          disabled={loadingMore}
         >
-          Load More
+          {!loadingMore ? "Load More" : "Loading..."}
         </button>
       )}
     </div>
