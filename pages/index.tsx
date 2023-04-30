@@ -163,7 +163,7 @@ const Home: NextPage = () => {
           `}</style>
 
           <button
-            className="rounded p-1 w-[50%] border bg-blue-500 text-black text-decoration-none px-2 r-4 md:mx-0 hover:border-blue-500"
+            className="rounded p-1 w-[50%] border bg-blue-500 text-white text-decoration-none px-2 r-4 md:mx-0 hover:border-blue-500"
             onClick={() => {
               loadNFTs();
             }}
