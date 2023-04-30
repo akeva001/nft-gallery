@@ -172,12 +172,6 @@ const Home: NextPage = () => {
         </div>
       </div>
 
-      {/* {loading && (
-        <div className="flex flex-col p-5 items-center text-center">
-          <p className="text-zinc-700">Loading...</p>
-        </div>
-      )} */}
-
       <div className="grid grid-cols-1 mt-8 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {nftsList
           .filter((nft) => nft.imageUrl && nft.imageUrl.startsWith("http"))
@@ -196,15 +190,8 @@ const Home: NextPage = () => {
               </div>
             </a>
           ))}
-
-        {/* {error && (
-          <div className="flex flex-col items-center mt-8">
-            <p className="text-red-700">
-              Error: {JSON.stringify(error, null, 2)}
-            </p>
-          </div>
-        )} */}
       </div>
+
       {nftsList.length > 0 && !loadedAll && (
         <button
           className="bg-[#06c] text-stone-100 p-2 mt-5 rounded-sm hover:[#06c]/80 transition-all transition-300 transition-linear"
