@@ -1,14 +1,35 @@
-import { AnkrProvider } from "@ankr.com/ankr.js";
+import { AnkrProvider, Blockchain } from "@ankr.com/ankr.js";
 
 const provider = new AnkrProvider(" ");
 
-export const getNfts = async (address: string, token: string) => {
+export const getNfts = async (
+  address: string,
+  token: string,
+  network: string
+) => {
+  let blockchain: Blockchain;
+
+  switch (network) {
+    case "eth":
+      blockchain = "eth";
+      break;
+    case "bsc":
+      blockchain = "bsc";
+      break;
+    case "matic":
+      blockchain = "polygon";
+      break;
+    default:
+      throw new Error(`Invalid network: ${network}`);
+  }
+
   const { assets, nextPageToken } = await provider.getNFTsByOwner({
     walletAddress: address,
-    pageSize: 50,
+    pageSize: 40,
     pageToken: token,
-    blockchain: ["bsc", "eth", "polygon"],
+    blockchain,
   });
+
   return {
     nfts: assets,
     nextToken: nextPageToken,

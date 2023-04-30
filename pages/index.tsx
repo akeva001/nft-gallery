@@ -10,64 +10,76 @@ const Home: NextPage = () => {
   const [walletAddress, setWalletAddress] = useState(
     "0x5139d44fcAF91a3B0c609E4eAF00E2E69cb4A4A6"
   );
+  const [network, setNetwork] = useState("eth");
   const [lastToken, setLastToken] = useState("");
   //const { nfts, loading, error } = useNfts(walletAddress);
-  const [nfts, setNfts] = useState<Nft[]>([]);
+  const [nftsList, setNfts] = useState<Nft[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [loadedAll, setLoadedAll] = useState(false);
+  const [noNFTs, setNoNFTs] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      console.log("ADDRESS");
-      console.log(walletAddress.length);
-      setLoading(true);
-      if (
-        walletAddress.length == 0 ||
-        walletAddress.length % 2 !== 0 ||
-        walletAddress.length < 30
-      ) {
-        console.log("RETURN");
-        setLoading(false);
-        return;
-      }
-      const { nfts, nextToken } = await getNfts(walletAddress, "");
-      setLastToken(nextToken);
-      console.log(nextToken);
+    loadNFTs();
+  }, []);
 
-      console.log({ nfts });
-      setNfts(nfts);
+  const loadNFTs = async () => {
+    setLoading(true);
+
+    if (
+      walletAddress.length == 0 ||
+      walletAddress.length % 2 !== 0 ||
+      walletAddress.length < 30
+    ) {
+      console.log("RETURN");
       setLoading(false);
-      if (!nextToken) {
-        setLoadedAll(true);
-        return;
-      }
-    })();
-  }, [walletAddress]);
-
-  const loadMoreNFTs = async () => {
-    setLoadingMore(true);
-    console.log(lastToken);
-    const { nfts, nextToken } = await getNfts(walletAddress, lastToken);
-    console.log(nextToken);
+      return;
+    }
+    const { nfts, nextToken } = await getNfts(walletAddress, "", network);
     setLastToken(nextToken);
-    setNfts((prevNfts) => [...prevNfts, ...nfts]);
+    console.log(nextToken);
+
     console.log({ nfts });
-    setLoadingMore(false);
+    setNfts(nfts);
+
+    setLoading(false);
+
+    if (nfts.length == 0) {
+      setNoNFTs(true);
+    }
+
     if (!nextToken) {
       setLoadedAll(true);
       return;
     }
   };
 
-  const uniqueNfts = new Set(
-    nfts
-      .filter((nft) => nft.imageUrl && nft.imageUrl.startsWith("http"))
-      .map((nft) => ({ ...nft, key: `${nft.contractAddress}/${nft.tokenId}` }))
-      .filter(
-        (nft, index, self) => index === self.findIndex((t) => t.key === nft.key)
-      )
-  );
+  const loadMoreNFTs = async () => {
+    setLoadingMore(true);
+    console.log("lasttoken");
+    console.log(lastToken);
+    const { nfts, nextToken } = await getNfts(
+      walletAddress,
+      lastToken,
+      network
+    );
+    console.log("nexttoken");
+    console.log(nextToken);
+    setLastToken(nextToken);
+    setNfts((prevNfts) => [...prevNfts, ...nfts]);
+    console.log({ nfts });
+    setLoadingMore(false);
+    if (!nextToken || nextToken === lastToken) {
+      setLoadedAll(true);
+      return;
+    }
+  };
+
+  const resetStates = async () => {
+    setNfts([]);
+    setLastToken("");
+    setNoNFTs(false);
+  };
 
   return (
     <div
@@ -78,38 +90,67 @@ const Home: NextPage = () => {
         NFT Gallery
       </h1>
 
-      <div className="flex md:flex-left flex-col mt-4">
+      <div className="flex md:flex-left flex-col mt-4 md:w-[425px]">
         <input
           id="wallet-address"
           type="text"
           value={walletAddress}
-          onChange={(e) => setWalletAddress(e.target.value)}
-          className="rounded p-1 w-[90vw] md:w-[425px] border bg-black text-blue-500 text-decoration-none pl-2 md:mx-0"
+          onChange={(e) => {
+            setWalletAddress(e.target.value);
+            resetStates();
+          }}
+          className="rounded p-1 w-[90vw] md:w-full border bg-black text-blue-500 text-decoration-none pl-2 md:mx-0"
           placeholder="Enter a wallet address here to view NFTs"
           spellCheck="false"
         />
+        <div className="flex md:flex-left flex-row mt-4 space-x-4">
+          <select
+            id="network"
+            value={network}
+            onChange={(e) => {
+              setNetwork(e.target.value);
+              resetStates();
+            }}
+            className="rounded p-1 w-[50%] border bg-black text-blue-500 text-decoration-none px-2 md:mx-0"
+          >
+            <option value="eth">Ethereum</option>
+            <option value="bsc">Binance Smart Chain</option>
+            <option value="matic">Polygon</option>
+          </select>
+
+          <button
+            className="rounded p-1 w-[50%] border bg-blue-500 text-black text-decoration-none px-2 r-4 md:mx-0"
+            onClick={() => {
+              loadNFTs();
+            }}
+          >
+            {loading ? "Loading..." : "Search"}
+          </button>
+        </div>
       </div>
 
-      {loading && (
+      {/* {loading && (
         <div className="flex flex-col p-5 items-center text-center">
           <p className="text-zinc-700">Loading...</p>
         </div>
-      )}
+      )} */}
 
       <div className="grid grid-cols-1 mt-8 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {[...uniqueNfts].map((nft) => (
-          <div
-            key={`${nft.contractAddress}/${nft.tokenId}`}
-            className="flex flex-col rounded border p-4"
-          >
-            <Card
-              name={nft.name}
-              imageSlug={nft.imageUrl}
-              blockchain={nft.blockchain}
-              collection={nft.collectionName}
-            />
-          </div>
-        ))}
+        {nftsList
+          .filter((nft) => nft.imageUrl && nft.imageUrl.startsWith("http"))
+          .map((nft) => (
+            <div
+              key={`${nft.contractAddress}/${nft.tokenId}`}
+              className="flex flex-col rounded border p-4"
+            >
+              <Card
+                name={nft.name}
+                imageSlug={nft.imageUrl}
+                blockchain={nft.blockchain}
+                collection={nft.collectionName}
+              />
+            </div>
+          ))}
 
         {/* {error && (
           <div className="flex flex-col items-center mt-8">
@@ -119,7 +160,7 @@ const Home: NextPage = () => {
           </div>
         )} */}
       </div>
-      {nfts.length > 0 && !loadedAll && (
+      {nftsList.length > 0 && !loadedAll && (
         <button
           className="bg-[#06c] text-stone-100 p-2 mt-5 rounded-sm hover:[#06c]/80 transition-all transition-300 transition-linear"
           onClick={() => loadMoreNFTs()}
@@ -128,6 +169,8 @@ const Home: NextPage = () => {
           {!loadingMore ? "Load More" : "Loading..."}
         </button>
       )}
+
+      {noNFTs && <p>This address has no NFT's</p>}
     </div>
   );
 };
