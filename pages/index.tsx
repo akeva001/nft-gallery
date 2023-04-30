@@ -88,7 +88,7 @@ const Home: NextPage = () => {
     z-0"
     >
       <h1 className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-blue-500">
-        NFT Gallery
+        MyNFTopia
       </h1>
 
       <div className="flex md:flex-left flex-col mt-4 md:w-[425px]">
