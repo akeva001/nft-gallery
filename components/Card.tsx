@@ -27,6 +27,7 @@ export default function Card({
 
   useEffect(() => {
     setIsVideoError(false);
+    console.log(isVideo);
   }, [imageSlug]);
 
   return (
@@ -45,7 +46,11 @@ export default function Card({
           onError={(i: any) => (i.target.style.display = "none")}
         />
       )}
-      {isVideo && <video loop autoPlay hidden muted src={imageSlug} />}
+      {isVideo && (
+        <video loop autoPlay muted>
+          <source src={imageSlug} />
+        </video>
+      )}
       {isHash && (
         <IpfsImage
           hash="{imageSlug}"

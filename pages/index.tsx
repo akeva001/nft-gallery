@@ -180,7 +180,8 @@ const Home: NextPage = () => {
             <a target="_blank" href={nft.imageUrl} rel="noreferrer">
               <div
                 key={`${nft.contractAddress}/${nft.tokenId}`}
-                className="flex flex-col rounded border p-4 hover:border-blue-500"
+                className="flex flex-col rounded border p-4 hover:border-blue-500 justify-center"
+                style={{ height: "100%" }}
               >
                 <Card
                   name={nft.name}
