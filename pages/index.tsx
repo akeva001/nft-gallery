@@ -99,7 +99,7 @@ const Home: NextPage = () => {
             setWalletAddress(e.target.value);
             resetStates();
           }}
-          className="rounded p-1 w-[90vw] md:w-full border bg-black text-blue-500 text-decoration-none pl-2 md:mx-0"
+          className="rounded p-1 w-[90vw] md:w-full border bg-black text-blue-500 text-decoration-none pl-2 md:mx-0 hover:border-blue-500"
           placeholder="Enter a wallet address here to view NFTs"
           spellCheck="false"
         />
@@ -117,9 +117,52 @@ const Home: NextPage = () => {
             <option value="bsc">Binance Smart Chain</option>
             <option value="matic">Polygon</option>
           </select>
+          <style jsx>{`
+            select::-ms-expand {
+              display: none;
+            }
+
+            select {
+              background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"><path fill="none" stroke="%233B82F6" stroke-width="2" d="M1 1l4 4 4-4"/></svg>');
+              background-position: right 0.75rem center;
+              background-repeat: no-repeat;
+              background-size: 10px 6px;
+              border-radius: 0.25rem;
+              border: 1px solid #d2d6dc;
+              color: #3b82f6;
+              font-size: 1rem;
+              -webkit-appearance: none;
+              -moz-appearance: none;
+              appearance: none;
+            }
+
+            input,
+            select:hover {
+              border-color: #3b82f6;
+            }
+
+            select:focus {
+              border-color: #4a5568;
+              box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+              outline: none;
+            }
+
+            select:disabled {
+              opacity: 0.5;
+            }
+
+            select::-ms-value {
+              color: #374151;
+              background-color: #f7fafc;
+            }
+
+            select::-moz-focus-inner {
+              border-style: none;
+            }
+          `}</style>
 
           <button
-            className="rounded p-1 w-[50%] border bg-blue-500 text-black text-decoration-none px-2 r-4 md:mx-0"
+            className="rounded p-1 w-[50%] border bg-blue-500 text-black text-decoration-none px-2 r-4 md:mx-0 hover:border-blue-500"
             onClick={() => {
               loadNFTs();
             }}
@@ -170,7 +213,7 @@ const Home: NextPage = () => {
         </button>
       )}
 
-      {noNFTs && <p>This address has no NFT's</p>}
+      {noNFTs && <p className="text-blue-500">This address has no NFT's</p>}
     </div>
   );
 };
