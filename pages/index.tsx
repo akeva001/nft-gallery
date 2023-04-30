@@ -182,17 +182,19 @@ const Home: NextPage = () => {
         {nftsList
           .filter((nft) => nft.imageUrl && nft.imageUrl.startsWith("http"))
           .map((nft) => (
-            <div
-              key={`${nft.contractAddress}/${nft.tokenId}`}
-              className="flex flex-col rounded border p-4"
-            >
-              <Card
-                name={nft.name}
-                imageSlug={nft.imageUrl}
-                blockchain={nft.blockchain}
-                collection={nft.collectionName}
-              />
-            </div>
+            <a target="_blank" href={nft.imageUrl} rel="noreferrer">
+              <div
+                key={`${nft.contractAddress}/${nft.tokenId}`}
+                className="flex flex-col rounded border p-4 hover:border-blue-500"
+              >
+                <Card
+                  name={nft.name}
+                  imageSlug={nft.imageUrl}
+                  blockchain={nft.blockchain}
+                  collection={nft.collectionName}
+                />
+              </div>
+            </a>
           ))}
 
         {/* {error && (

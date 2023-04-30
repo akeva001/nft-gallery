@@ -78,9 +78,9 @@ export default function Card({
         </div>
       )}
       <div className="flex flex-col space-y-2 pt-2">
-        <a target="_blank" href={imageSlug} rel="noreferrer">
-          <span className="font-bold mt-4 text-base sm:text-lg">{name}</span>
-        </a>
+        {/* <a target="_blank" href={imageSlug} rel="noreferrer"> */}
+        <span className="font-bold mt-4 text-base sm:text-lg">{name}</span>
+        {/* </a> */}
         <span className="text-sm sm:text-md">{collection}</span>
         <span className="uppercase text-xs sm:text-sm font-mono font-bold text-[#356DF3]">
           <span className="text-white">Chain: </span>
