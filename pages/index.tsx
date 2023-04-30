@@ -79,6 +79,7 @@ const Home: NextPage = () => {
     setNfts([]);
     setLastToken("");
     setNoNFTs(false);
+    setLoadedAll(false);
   };
 
   return (
