@@ -1,6 +1,6 @@
 import { AnkrProvider, Blockchain } from "@ankr.com/ankr.js";
 
-const provider = new AnkrProvider(" ");
+const provider = new AnkrProvider(`${process.env.ANKR_ENDPOINT}`);
 
 export const getNfts = async (
   address: string,
